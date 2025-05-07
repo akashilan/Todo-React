@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
+import Login from './Pages/Login';
+import Signup from './Pages/Signup';
+import Dashboard from './Pages/Dashboard';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 const App = () => {
   return (

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, List, ListItem, ListItemText, Checkbox, IconButton, Grid, Card } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import TodoForm from '../components/TodoForm';
+import TodoForm from '../Components/TodoForm';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
