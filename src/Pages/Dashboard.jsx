@@ -1,8 +1,8 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, List, ListItem, ListItemText, Checkbox, IconButton } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemText, Checkbox, IconButton, Grid, Card } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import TodoForm from '../Components/TodoForm';
+import TodoForm from '../components/TodoForm';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -10,13 +10,11 @@ const Dashboard = () => {
   const currentUser = localStorage.getItem('currentUser');
   const [tasks, setTasks] = useState([]);
 
-  // Load user-specific tasks from localStorage
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem(`tasks_${currentUser}`)) || [];
     setTasks(savedTasks);
   }, [currentUser]);
 
-  // Save tasks to localStorage
   const updateLocalStorage = (updatedTasks) => {
     setTasks(updatedTasks);
     localStorage.setItem(`tasks_${currentUser}`, JSON.stringify(updatedTasks));
@@ -46,29 +44,35 @@ const Dashboard = () => {
   };
 
   return (
-    <Box maxWidth={600} mx="auto" mt={5}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5">Welcome, {currentUser}</Typography>
+    <Box p={3}>
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Typography variant="h5">Hello, {currentUser}</Typography>
         <Button onClick={handleLogout} variant="outlined">Logout</Button>
+      </Grid>
+
+      <Box mt={3}>
+        <Card sx={{ p: 2, mb: 3 }}>
+          <Typography variant="h6" mb={1}>Add a Task</Typography>
+          <TodoForm addTask={addTask} />
+        </Card>
+
+        <Typography variant="h6" mb={2}>Your Tasks</Typography>
+        <List>
+          {tasks.map((task, index) => (
+            <ListItem key={index} sx={{ bgcolor: '#f5f5f5', mb: 1, borderRadius: 1 }}>
+              <Checkbox checked={task.completed} onChange={() => toggleComplete(index)} />
+              <ListItemText
+                primary={task.title}
+                secondary={task.description}
+                sx={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+              />
+              <IconButton onClick={() => deleteTask(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
+          ))}
+        </List>
       </Box>
-
-      <TodoForm addTask={addTask} />
-
-      <List>
-        {tasks.map((task, index) => (
-          <ListItem key={index} sx={{ bgcolor: '#f1f1f1', my: 1 }}>
-            <Checkbox checked={task.completed} onChange={() => toggleComplete(index)} />
-            <ListItemText
-              primary={task.title}
-              secondary={task.description}
-              sx={{ textDecoration: task.completed ? 'line-through' : 'none' }}
-            />
-            <IconButton onClick={() => deleteTask(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
     </Box>
   );
 };
